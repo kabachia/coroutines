@@ -1,15 +1,18 @@
 #Program to demonstrate coroutine execution
 def print_name(prefix):
     print("Searching prefix:{}".format(prefix))
-    while True:
-        name = (yield)
-        if prefix in name:
-            print(name)
+    try:
+        while True:
+            name = (yield)
+            if prefix in name:
+                print(name)
+    except GeneratorExit:
+        print("Closing coroutine")
 
-#Calling coroutine, nothing will happen
 corou = print_name("Dear")
-
 corou.__next__()
 
 corou.send("Atul")
 corou.send("Dear Atul")
+corou.close()
+corou.send("Martin")
